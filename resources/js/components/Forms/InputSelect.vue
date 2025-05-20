@@ -146,6 +146,6 @@ export default defineComponent({
 .vs__dropdown-toggle{
     padding:5px 5px 8px 5px !important;
     border-radius: 0.375rem !important;
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important
 }
 </style>

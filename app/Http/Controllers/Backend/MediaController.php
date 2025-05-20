@@ -17,23 +17,24 @@ class MediaController extends Controller
 {
     public function index()
     {
+        cache()->flush();
+        request()->merge([
+            'user_id' => auth()->user()->id ?? null,
+        ]);
         $medias = MediaRepository::paginate(20);
-
-        return Inertia::render('Views/'.vueFormExist('index-'.type(), 'media', 'index'), [
-           'medias' => MediaResource::collection($medias),
-           'title' => request('trash') ? 'Trash' : 'Static Medias',
-           'trash' => request('trash') ? true : false,
-           'breadcumb' => [
-             [
-                 'text' => 'Dashboard',
-                 'url' => route('dashboard.index'),
-             ],
-             [
-                 'text' => toTitle(type()),
-                 'url' => route('post.index', ['type' => type()]),
-             ],
-           ],
-         ]);
+        return response()->json([
+            'data' => MediaResource::collection($medias)->resolve(),
+            'meta' => [
+                'current_page' => $medias->currentPage(),
+                'last_page' => $medias->lastPage(),
+                'per_page' => $medias->perPage(),
+                'total' => $medias->total(),
+                'links' => [
+                    'next' => $medias->nextPageUrl(),
+                    'previous' => $medias->previousPageUrl(),
+                ]
+            ]
+        ]);
     }
 
     /**

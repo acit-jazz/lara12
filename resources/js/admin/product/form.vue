@@ -100,7 +100,7 @@ const changeTab = (newtab) => {
                             </div>
                         </div>
                         <div class="block w-full lg:px-4" :class="{hidden : tab != 'galleries'}">
-                            <SelectSection v-model="form.galleries" @onsave="submit"></SelectSection>
+                            <InputGallery v-model="form.galleries" @onsave="submit"></InputGallery>
                         </div>
                         <div class="block w-full overflow-x-auto lg:px-4" :class="{hidden : tab != 'seo'}">
                                 <div class="block">
@@ -149,10 +149,10 @@ const changeTab = (newtab) => {
                         :options="categories"
                         label="title"
                         store="id"
-                        :is_string="true"
+                        :multiple="true"
                         placeholder="Category"
                     />
-                    <InputError class="mt-2" :message="form.errors.category" />
+                    <InputError class="mt-2" :message="form.errors.categories" />
                     </div>
                     <div class="block mt-4">
                         <InputLabel for="qty" value="Quantity" />
@@ -163,19 +163,6 @@ const changeTab = (newtab) => {
                         <InputLabel for="price" value="Price" />
                         <TextInput type="number" class="mt-1 block w-full" v-model="form.price"  />
                         <InputError class="mt-2" :message="form.errors.price" />
-                    </div>
-                    <div class="block mt-4">
-                        <InputLabel :for="form.banners" value="Banner" />
-                        <acit-jazz-upload
-                        class="mt-1 block w-full"
-                        title="banner"
-                        folder="product-banner"
-                        :limit="1"
-                        filetype="image/*"
-                        name="banner"
-                        v-model="form.banners"
-                        >
-                        </acit-jazz-upload>
                     </div>
                 </div>
             </div>

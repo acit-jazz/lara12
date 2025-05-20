@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import {useBuildQuery} from '@/Composables/useBuildQuery.js'
 import AppLayout from '@/layouts/AppLayout.vue';
+import {router } from '@inertiajs/vue3';
 const props  = defineProps({
     pages: Object,
     title:String,
@@ -14,6 +15,7 @@ const params = ref({
 })
 const filter = () => {
     const endpoint = ref(useBuildQuery(route('page.index'),params.value));
+    router.get(endpoint.value);
 }
 </script>
 <template>
@@ -34,7 +36,7 @@ const filter = () => {
                                 </div>
                             </div>
                             <div class="ml-auto" >
-                              <SecondaryLink   :href="route('product.create',)" class="px-3 py-1 rounded-none rounded-l-md">Create New</SecondaryLink>
+                              <SecondaryLink   :href="route('product.create',)" class="px-3 py-1 rounded-none rounded-l-md">Create</SecondaryLink>
                               <SecondaryLink  :href="route('product.index', { trash:'1' })" class="px-3 py-1 rounded-none rounded-r-md bg-red-500">Trash</SecondaryLink>
                             </div>
                         </div>

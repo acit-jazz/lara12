@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import {useBuildQuery} from '@/Composables/useBuildQuery.js'
 import AppLayout from '@/layouts/AppLayout.vue';
+import {router } from '@inertiajs/vue3';
 const props  = defineProps({
     products: Object,
     title:String,
@@ -14,6 +15,7 @@ const params = ref({
 })
 const filter = () => {
     const endpoint = ref(useBuildQuery(route('product.index'),params.value));
+    router.get(endpoint.value);
 }
 </script>
 <template>
@@ -35,7 +37,7 @@ const filter = () => {
                             </div>
                         </div>
                         <div class="ml-auto mt-3 lg:mt-0" >
-                            <SecondaryLink   :href="route('product.create',)" class="px-3 py-1 rounded-none rounded-l-md">Create New</SecondaryLink>
+                            <SecondaryLink   :href="route('product.create',)" class="px-3 py-1 rounded-none rounded-l-md">Create</SecondaryLink>
                             <SecondaryLink  :href="route('product.index', { trash:'1' })" class="px-3 py-1 rounded-none rounded-r-md bg-red-500">Trash</SecondaryLink>
                         </div>
                     </div>
@@ -46,6 +48,8 @@ const filter = () => {
                     <tr class="hidden lg:table-row">
                         <Th>Title</Th>
                         <Th>Category</Th>
+                        <Th>Price</Th>
+                        <Th>Qty</Th>
                         <Th>Published Date</Th>
                         <Th></Th>
                     </tr>
@@ -62,11 +66,19 @@ const filter = () => {
                             v-if="product.categories"
                             v-for="(cat, index) in product.categories"
                             :key="index"
-                            class="!text-xs !py-1 !px-2"
+                            class="!text-xs !py-1 !px-2 mr-2"
                             :style="{ backgroundColor: cat.color, color: cat.text_color }"
                             >
                             {{ cat.title }}
                             </Badge>
+                        </Td>
+                        <Td>
+                            <strong class="block lg:hidden">Price</strong>
+                            <span>{{ product.price.currency }}{{product.price.formatted}}</span>
+                        </Td>
+                        <Td>
+                            <strong class="block lg:hidden">Qty</strong>
+                            <span>{{product.qty.formatted}}</span>
                         </Td>
                         <Td>
                             <strong class="block lg:hidden">Published Date</strong>

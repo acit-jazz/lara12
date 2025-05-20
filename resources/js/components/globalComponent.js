@@ -35,6 +35,9 @@ const TextAreaInput = defineAsyncComponent(() =>
 const InputColor = defineAsyncComponent(() =>
     import("@/components/Forms/InputColor.vue")
 );
+const InputGallery = defineAsyncComponent(() =>
+    import("@/components/Forms/InputGallery.vue")
+);
 const SelectSection = defineAsyncComponent(() =>
     import("@/components/Forms/SelectSection.vue")
 );
@@ -89,6 +92,7 @@ export default {
         Vue.component("TextAreaInput", TextAreaInput),
         Vue.component("InputBanners", InputBanners),
         Vue.component("InputColor", InputColor),
+        Vue.component("InputGallery", InputGallery),
         Vue.component("SelectSection", SelectSection),
         Vue.component("Th", Th),
         Vue.component("Td", Td),
