@@ -90,6 +90,9 @@
 input,textarea{
   @apply py-2 px-3 border border-gray-300 shadow-none;
 }
+a,button{
+  @apply cursor-pointer
+}
 
 :root {
   --background: hsl(0 0% 100%);

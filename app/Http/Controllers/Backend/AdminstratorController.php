@@ -21,16 +21,11 @@ class AdminstratorController extends Controller
 {
     public function index()
     {
-        if (request('trash') == 1) {
-            $adminstrators = AdministratorRepository::paginateTrash(20);
-        } else {
-            $adminstrators = AdministratorRepository::paginate(20);
-        }
+        $adminstrators = AdministratorRepository::paginate(20);
 
-        return Inertia::render('Views/administrator/index', [
+        return Inertia::render('administrator/index', [
             'administrators' => AdministratorResource::collection($adminstrators),
-           'title' => request('trash') ? 'Trash' : 'Adminstrators ',
-           'count_trash' => AdministratorRepository::countTrash(),
+            'title' => request('trash') ? 'Trash' : 'Administrator',
             'trash' => request('trash') ? true : false,
             'breadcumb' => [
                 [
@@ -50,7 +45,7 @@ class AdminstratorController extends Controller
      */
     public function create(Request $request)
     {
-        $adminstrators = [
+        $adminstrator = [
             'name' => '',
             'roles' => 'admin',
             'email' => '',
@@ -59,9 +54,10 @@ class AdminstratorController extends Controller
         ];
         // dd($role);
 
-        return Inertia::render('Views/'.vueFormExist('Administrator', 'administrator', 'form'), [
+        return Inertia::render('administrator/create', [
+            'title' =>  'Create New Administrator',
             'status' => session('status'),
-            'administrators' => $adminstrators,
+            'administrator' => $adminstrator,
             'method' => 'store',
         ]);
     }
@@ -71,57 +67,31 @@ class AdminstratorController extends Controller
      */
     public function store(AdministratorRequest $request)
     {
-        try {
-            $post = $request->post();
-            // dd($post);
-            $banners = [
-                'name' => $post['name'],
-                // 'bod' => $post['bod'],
-                'email' => $post['email'],
-                'password' => Hash::make($post['password']),
-            ];
-            $admin = Admin::create($banners);
-            $admin->adminPassword()->create(['password' => Hash::make($post['password'])]);
+            $admin = Admin::create($request->all());
+            $admin->adminPassword()->create(['password' => Hash::make($request->password)]);
 
             Cache::tags('administrator')->flush();
 
             return redirect('backend/administrator')->with('message', 'proses menambah  administrator berhasil');
-        } catch (\Throwable $th) {
-            dd($th);
-
-            return redirect('backend/administrator')->with('message', 'mohon maaf proses menambah  administrator gagal');
-        }
     }
 
     /**
      * Display the user's profile form.
      */
-    public function changePassword(Request $request)
+    public function editPassword(Admin $administrator)
     {
-        $administrator = Admin::find(auth()->guard('admin')->user()->id);
         $start = Carbon::now()->subMinutes(env('PASSWORD_EXPIRED', 60 * 24 * 30 * 3));
         $lastPass = AdminPassword::where('admin_id', $administrator->id)->latest('created_at')->first();
         $message = '';
         if (!is_null($lastPass)) {
             if ($lastPass->created_at < $start) {
-                $message = 'Your password has not been changed for 3 months, please change your password to be able to use the My Telin dashboard';
+                $message = 'Your password has not been changed for 3 months, please change your password';
             }
         }
-        $administrator = [
-           'id' => $administrator->id,
-           'name' => $administrator->name,
-           'email' => $administrator->email,
-           'bod' => $administrator->bod,
-           'old_password' => '',
-           'password' => '',
-           'repassword' => '',
-        ];
 
-        return Inertia::render('Views/administrator/changePassword', [
-           'title' => 'Change Password ',
-            'status' => session('status'),
-             'method' => 'update',
-            'administrators' => $administrator,
+        return Inertia::render('administrator/password', [
+            'title' => 'Change Password ',
+            'administrator' => $administrator,
             'message' => $message,
             'breadcumb' => [
                 [
@@ -133,7 +103,7 @@ class AdminstratorController extends Controller
                     'url' => '/backend/administrator',
                 ],
                 [
-                    'text' => 'Edit - '.$administrator['name'],
+                    'text' => $administrator->name,
                     'url' => '',
                 ],
             ],
@@ -152,24 +122,12 @@ class AdminstratorController extends Controller
         return redirect('backend/administrator')->with('message', 'proses update  administrator berhasil');
     }
 
-    public function edit(Request $request, Admin $administrator)
+    public function edit(Admin $administrator)
     {
         $administrator = $administrator;
-        //  dd($getRole);
-        $dataAdminstrators = [
-           'id' => $administrator->id,
-           'name' => $administrator->name,
-           'email' => $administrator->email,
-           'roles' => 'admin',
-           'password' => '',
-           'repassword' => '',
-    ];
-        //  dd($dataAdminstrators);
 
-        return Inertia::render('Views/'.vueFormExist('Administrator', 'administrator', 'form'), [
-             'status' => session('status'),
-              'method' => 'update',
-             'administrators' => $dataAdminstrators,
+        return Inertia::render('administrator/edit', [
+             'administrator' => $administrator,
              'breadcumb' => [
                  [
                      'text' => 'Dashboard',
@@ -180,7 +138,7 @@ class AdminstratorController extends Controller
                      'url' => '/backend/administrator',
                  ],
                  [
-                     'text' => 'Edit - '.$administrator->name,
+                     'text' => $administrator->name,
                      'url' => '',
                  ],
              ],

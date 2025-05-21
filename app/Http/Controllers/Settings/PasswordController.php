@@ -7,11 +7,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PasswordController extends Controller
 {
+
+    protected function getUser()
+    {
+        return Auth::guard('admin')->check()
+            ? Auth::guard('admin')->user()
+            : Auth::user();
+    }
+
+
     /**
      * Show the user's password settings page.
      */
@@ -30,8 +40,8 @@ class PasswordController extends Controller
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
+        $this->getUser()->update([
+            'password' => $validated['password'],
         ]);
 
         return back();

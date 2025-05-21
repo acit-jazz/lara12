@@ -17,7 +17,6 @@ class MediaController extends Controller
 {
     public function index()
     {
-        cache()->flush();
         request()->merge([
             'user_id' => auth()->user()->id ?? null,
         ]);

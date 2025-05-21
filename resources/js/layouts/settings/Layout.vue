@@ -5,7 +5,20 @@ import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const sidebarNavItems: NavItem[] = [
+interface Props {
+    title?: string;
+    description?: string;
+    navItems?: NavItem[];
+}
+
+// Gunakan withDefaults untuk mendefinisikan default value
+const props = withDefaults(defineProps<Props>(), {
+    title: 'Settings',
+    description: 'Manage your profile and account settings.',
+});
+
+
+const sidebarNavItems: NavItem[] = props.navItems ? props.navItems : [
     {
         title: 'Profile',
         href: '/backend/settings/profile',
@@ -27,10 +40,10 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Settings" description="Manage your profile and account settings" />
+        <Heading :title="title" :description="description" />
 
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-x-12 lg:space-y-0">
-            <aside class="w-full max-w-xl lg:w-48">
+            <aside class="w-full max-w-xl lg:w-48" v-if="sidebarNavItems.length > 0">
                 <nav class="flex flex-col space-x-0 space-y-1">
                     <Button
                         v-for="item in sidebarNavItems"
