@@ -48,6 +48,11 @@ const navItems: NavItem[] = [
         href: '/backend/administrator/' + props.administrator.id + '/password',
         type: ''
     },
+    {
+        title: 'Roles & Permissions',
+        href: '/backend/administrator/' + props.administrator.id + '/role-permissions',
+        type: ''
+    },
 ]
 </script>
 

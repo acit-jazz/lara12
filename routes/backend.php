@@ -37,15 +37,17 @@ Route::group(['middleware' => ['auth.admin']], function () {
     Route::patch('/page/{page}', [PageController::class, 'update'])->name('page.update')->middleware('role_or_permission_admin:Master|Editor|Edit Page');
 
     // Media
-    Route::post('/media/destroy-all', [MediaController::class, 'destroyAll'])->name('media.destroy-all')->middleware('role_or_permission_admin:Master|Delete Media');
-    Route::post('/media/{media}/delete', [MediaController::class, 'delete'])->name('media.delete')->middleware('role_or_permission_admin:Master|Delete Media');
-    Route::post('/media/{media}/destroy', [MediaController::class, 'destroy'])->name('media.destroy')->middleware('role_or_permission_admin:Master|Delete Media');
-    Route::post('/media/{media}/restore', [MediaController::class, 'restore'])->name('media.restore')->middleware('role_or_permission_admin:Master|Delete Media');
-    Route::get('/media', [MediaController::class, 'index'])->name('media.index')->middleware('role_or_permission_admin:Master|View Media');
-    Route::post('/media', [MediaController::class, 'store'])->name('media.store')->middleware('role_or_permission_admin:Master|Create Media');
-    Route::patch('/media/{media}', [MediaController::class, 'update'])->name('page.update')->middleware('role_or_permission_admin:Master|Edit Media');
+    Route::post('/media/destroy-all', [MediaController::class, 'destroyAll'])->name('media.destroy-all')->middleware('role_or_permission_admin:Master|Editor|Delete Media');
+    Route::post('/media/{media}/delete', [MediaController::class, 'delete'])->name('media.delete')->middleware('role_or_permission_admin:Master|Editor|Delete Media');
+    Route::post('/media/{media}/destroy', [MediaController::class, 'destroy'])->name('media.destroy')->middleware('role_or_permission_admin:Master|Editor|Delete Media');
+    Route::post('/media/{media}/restore', [MediaController::class, 'restore'])->name('media.restore')->middleware('role_or_permission_admin:Master|Editor|Delete Media');
+    Route::get('/media', [MediaController::class, 'index'])->name('media.index')->middleware('role_or_permission_admin:Master|Editor|View Media');
+    Route::post('/media', [MediaController::class, 'store'])->name('media.store')->middleware('role_or_permission_admin:Master|Editor|Create Media');
+    Route::patch('/media/{media}', [MediaController::class, 'update'])->name('page.update')->middleware('role_or_permission_admin:Master|Editor|Edit Media');
 
 
+    Route::get('/administrator/{administrator}/role-permissions', [AdministratorController::class, 'rolePermission'])->name('administrator.rolePermission')->middleware('role_or_permission_admin:Master|Edit Admin');
+    Route::post('/administrator/{administrator}/role-permissions', [AdministratorController::class, 'assignRolePermission'])->name('administrator.assignRolePermission')->middleware('role_or_permission_admin:Master|Edit Admin');
     Route::get('/administrator/{administrator}/password', [AdministratorController::class, 'editPassword'])->name('administrator.editPassword')->middleware('role_or_permission_admin:Master|Edit Admin');
     Route::put('/administrator/{administrator}/password', [AdministratorController::class, 'updatePassword'])->name('administrator.updatePassword')->middleware('role_or_permission_admin:Master|Edit Admin');
     Route::post('/administrator/{administrator}/delete', [AdministratorController::class, 'delete'])->name('administrator.delete')->middleware('role_or_permission_admin:Master|Delete Admin');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Administrator\AdministratorRequest;
+use App\Http\Requests\Administrator\AdministratorRolePermissionRequest;
 use App\Http\Requests\Administrator\AdministratorUpdatePasswordRequest;
 use App\Http\Requests\Administrator\AdministratorUpdateRequest;
 use App\Http\Resources\Backend\AdministratorResource;
@@ -16,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdministratorController extends Controller
 {
@@ -75,9 +78,44 @@ class AdministratorController extends Controller
             return redirect('backend/administrator')->with('message', 'proses menambah  administrator berhasil');
     }
 
-    /**
-     * Display the user's profile form.
-     */
+    public function rolePermission(Admin $administrator)
+    {
+        $roles = Role::with('permissions')->get();
+        $permissions = Permission::all();
+        return Inertia::render('administrator/role-permission', [
+            'title' => 'Change Password ',
+            'administrator' => $administrator,
+            'role' => $administrator->roles->first(),
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'breadcumb' => [
+                [
+                    'text' => 'Dashboard',
+                    'url' => '/backend',
+                ],
+                [
+                    'text' => 'Administrators',
+                    'url' => '/backend/administrator',
+                ],
+                [
+                    'text' => $administrator->name,
+                    'url' => '',
+                ],
+            ],
+        ]);
+    }
+    public function assignRolePermission(Admin $administrator , AdministratorRolePermissionRequest $request)
+    {
+        $permissionIds = $request->permissions ;
+        $permissions = Permission::whereIn('id', $permissionIds)->get();
+        $adminRole = Role::firstOrCreate(['name' => $request->role, 'guard_name' => 'admin']);
+        $adminRole->syncPermissions($permissions);
+        $adminRole->syncPermissions($permissions);
+        $administrator->assignRole($adminRole);
+        Cache::tags('administrator')->flush();
+        return redirect()->back()->with('message', 'proses update  administrator berhasil');
+    }
+
     public function editPassword(Admin $administrator)
     {
         $start = Carbon::now()->subMinutes(env('PASSWORD_EXPIRED', 60 * 24 * 30 * 3));

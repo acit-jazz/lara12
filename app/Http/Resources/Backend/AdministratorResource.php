@@ -19,6 +19,7 @@ class AdministratorResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'role' => $this->roles->first(),
             'created_at'=> $this->created_at ? $this->created_at->format('d/m/Y H:i:s') : null ,
             'updated_at'=> $this->updated_at ? $this->updated_at->format('d/m/Y H:i:s') : null ,
 

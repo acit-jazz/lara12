@@ -20,13 +20,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/backend/settings/password',
-    },
-];
-
 const passwordInput = ref<HTMLInputElement | null>(null);
 
 const form = useForm({
@@ -59,6 +52,11 @@ const navItems: NavItem[] = [
         title: 'Password',
         href: '/backend/administrator/' + props.administrator.id + '/password',
         type: ''
+    },
+    {
+        title: 'Roles & Permissions',
+        href: `/backend/administrator/${props.administrator.id}/role-permissions`,
+        type: '',
     },
 ]
 </script>

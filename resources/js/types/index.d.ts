@@ -37,4 +37,17 @@ export interface User {
     updated_at: string;
 }
 
+export interface Admin {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+    roles?: Array<any>;
+    permissions?: Array<any>;
+}
+
+
 export type BreadcrumbItemType = BreadcrumbItem;

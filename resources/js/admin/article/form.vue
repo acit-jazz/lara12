@@ -3,21 +3,21 @@ import { useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 
 let props = defineProps({
-  product: Object,
+  article: Object,
   type: [String, Boolean],
   method: String,
-  categories: Array,
+  tags: Array,
   is_admin:Boolean,
 });
 
-const form = ref(useForm(props.product));
+const form = ref(useForm(props.article));
 onMounted(() => {
   form.value.type = props.type;
 });
 
 const submit = () => {
   if (props.method == "store") {
-    form.value.post(route("product.store", form.value.id), {
+    form.value.post(route("article.store", form.value.id), {
       preserveScroll: false,
       onFinish: () => console.log("ok"),
       onSuccess: (res) => {
@@ -26,11 +26,11 @@ const submit = () => {
     });
   }
   if (props.method == "update") {
-    form.value.patch(route("product.update", { product: props.product }), {
+    form.value.patch(route("article.update", { article: props.article }), {
       preserveScroll: false,
       onFinish: () => console.log("ok"),
       onSuccess: (res) => {
-        form.value = useForm(res.props.product);
+        form.value = useForm(res.props.article);
       },
     });
   }
@@ -56,12 +56,12 @@ const changeTab = (newtab) => {
                                     <li class="mr-2">
                                         <a @click="changeTab('content')" class="inline-block cursor-pointer font-bold p-4 rounded-t-lg border-b-2 border-transparent"
                                         :class="{'!border-blue-600  text-blue-600 active dark:text-blue-500 dark:border-blue-500' : tab == 'content'}"
-                                        aria-current="product">Content</a>
+                                        aria-current="article">Content</a>
                                     </li>
                                     <li class="mr-2">
-                                        <a @click="changeTab('galleries')"  class="inline-block cursor-pointer font-bold p-4 rounded-t-lg border-b-2 border-transparent"
-                                        :class="{'!border-blue-600  text-blue-600 active dark:text-blue-500 dark:border-blue-500' : tab == 'galleries'}"
-                                        >Gallery</a>
+                                        <a @click="changeTab('banners')"  class="inline-block cursor-pointer font-bold p-4 rounded-t-lg border-b-2 border-transparent"
+                                        :class="{'!border-blue-600  text-blue-600 active dark:text-blue-500 dark:border-blue-500' : tab == 'banners'}"
+                                        >Banners</a>
                                     </li>
                                     <li class="mr-2">
                                         <a @click="changeTab('seo')"  class="inline-block cursor-pointer font-bold p-4 rounded-t-lg border-b-2 border-transparent"
@@ -99,8 +99,8 @@ const changeTab = (newtab) => {
                                 />
                             </div>
                         </div>
-                        <div class="block w-full lg:px-4" :class="{hidden : tab != 'galleries'}">
-                            <InputGallery v-model="form.galleries" @onsave="submit"></InputGallery>
+                        <div class="block w-full lg:px-4" :class="{hidden : tab != 'banners'}">
+                            <InputGallery v-model="form.banners" @onsave="submit"></InputGallery>
                         </div>
                         <div class="block w-full overflow-x-auto lg:px-4" :class="{hidden : tab != 'seo'}">
                                 <div class="block">
@@ -133,6 +133,20 @@ const changeTab = (newtab) => {
             <div class="w-full lg:w-4/12">
                 <div class="relative flex flex-col min-w-0 break-wordsw-full px-5">
                     <div class="block mt-4">
+                    <div class="flex items-center">
+                        <input type="checkbox"
+                        v-model="form.featured"
+                        :checked="form.featured == 1"
+                        />
+                        <InputLabel
+                        for="featured"
+                        value="Set as featured"
+                        class="!m-0 !ml-3"
+                        />
+                    </div>
+                    <InputError class="mt-2" :message="form.errors.featured" />
+                    </div>
+                    <div class="block mt-4">
                         <InputLabel for="published_at" value="Published Date" />
                         <TextInput
                         type="datetime-local"
@@ -143,26 +157,43 @@ const changeTab = (newtab) => {
                         <InputError class="mt-2" :message="form.errors.published_at" />
                     </div>
                     <div class="block mt-4">
-                    <InputLabel for="category" value="Category" />
+                    <InputLabel for="tag" value="Tag" />
                     <InputSelect
-                        v-model="form.categories"
-                        :options="categories"
+                        v-model="form.tags"
+                        :options="tags"
                         label="title"
                         store="id"
                         :multiple="true"
-                        placeholder="Category"
+                        placeholder="Tag"
                     />
-                    <InputError class="mt-2" :message="form.errors.categories" />
+                    <InputError class="mt-2" :message="form.errors.tags" />
                     </div>
                     <div class="block mt-4">
-                        <InputLabel for="qty" value="Quantity" />
-                        <TextInput type="number" class="mt-1 block w-full" v-model="form.qty"  />
-                        <InputError class="mt-2" :message="form.errors.qty" />
+                        <InputLabel for="status" value="Status" />
+                        <InputSelect
+                            v-model="form.status"
+                            :options="[
+                            { id: 'Draft', title: 'Draft' },
+                            { id: 'Published', title: 'Published' },
+                            ]"
+                            store="id"
+                            label="title"
+                            placeholder="Status"
+                        />
+                        <InputError class="mt-2" :message="form.errors.status" />
                     </div>
                     <div class="block mt-4">
-                        <InputLabel for="price" value="Price" />
-                        <TextInput type="number" class="mt-1 block w-full" v-model="form.price"  />
-                        <InputError class="mt-2" :message="form.errors.price" />
+                        <InputLabel :for="form.images" value="Images" />
+                        <acit-jazz-upload
+                        class="mt-1 block w-full"
+                        title="images"
+                        folder="article"
+                        :limit="1"
+                        filetype="image/*"
+                        name="images"
+                        v-model="form.images"
+                        >
+                        </acit-jazz-upload>
                     </div>
                 </div>
             </div>

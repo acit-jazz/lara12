@@ -87,7 +87,7 @@ const remove = (file) => {
   formData.append("_token", usePage().props.csrf_token);
   axios({
     method: "POST",
-    url: route("media.forceDelete", { media: file.id }),
+    url: route("media.destroy", { media: file.id }),
     data: formData,
   })
     .then((response) => {

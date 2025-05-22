@@ -36,9 +36,15 @@ const filter = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="ml-auto mt-3 lg:mt-0" >
-                            <SecondaryLink   :href="route('user.create',)" class="px-3 py-1 rounded-none rounded-l-md">Create</SecondaryLink>
-                            <SecondaryLink  :href="route('user.index', { trash:'1' })" class="px-3 py-1 rounded-none rounded-r-md bg-red-500">Trash</SecondaryLink>
+                        <div class="fixed bottom-3 right-3 lg:bottom-0 lg:right-0 lg:relative ml-auto flex flex-col gap-3 lg:block">
+                            <SecondaryLink  :href="route('user.create')" class="size-10 lg:size-auto  lg:px-3 lg:py-2 flex items-center justify-center gap-2 !rounded-full lg:!rounded-none lg:!rounded-l-md">
+                            <i class="fa fa-pencil"></i>
+                            <span class="hidden lg:block">Create New</span>
+                            </SecondaryLink>
+                            <SecondaryLink  :href="route('user.index', { trash:'1' })" class="size-10 lg:size-auto  lg:px-3 lg:py-2 flex items-center justify-center gap-2 !rounded-full lg:!rounded-none lg:!rounded-r-md bg-red-500">
+                            <i class="fa fa-trash-can"></i>
+                            <span class="hidden lg:block">Trash</span>
+                            </SecondaryLink>
                         </div>
                     </div>
                 </div>

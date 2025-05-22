@@ -63,6 +63,32 @@ function navigation()
                 'role_or_permission' => 'Master|Editor|View Product Category',
             ];
         }
+
+
+        if (Route::has('article.index')) {
+            $navigatorCms['sections'][] = [
+                'title' => 'Article',
+                'type' => 'header',
+                'role_or_permission' => 'Master|Editor|View Article',
+            ];
+            $navigatorCms['sections'][] = [
+                'title' => 'Article',
+                'href' => route('article.index'),
+                'icon' => 'fa-box',
+                'type' => 'menu',
+                'role_or_permission' => 'Master|Editor|View Article',
+            ];
+        }
+        if (Route::has('tag.index')) {
+            $navigatorCms['sections'][] = [
+                'title' => 'Tag',
+                'href' => route('tag.index'),
+                'icon' => 'fa-box',
+                'type' => 'menu',
+                'role_or_permission' => 'Master|Editor|View Tag',
+            ];
+        }
+        
         if (Route::has('administrator.index')) {
             $navigatorCms['sections'][] = [
                 'title' => 'User',

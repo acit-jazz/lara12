@@ -134,12 +134,12 @@ const removeMedia = (file) => {
     formData.append("_token", usePage().props.csrf_token);
     axios({
       method: "POST",
-      url: route("media.forceDelete", { media: file.id }),
+      url: route("media.destroy", { media: file.id }),
       data: formData,
     })
     .then((response) => {
       resfiles.value = resfiles.value.filter((f) => f.id != file.id);
-      medias.value = medias.value.filter((f) => f.id != file.id);
+      medias.value = medias.value.data.filter((f) => f.id != file.id);
       emit("update:modelValue", resfiles.value);
       emit("uploaded", resfiles.value);
     })
@@ -289,7 +289,6 @@ const removeMedia = (file) => {
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 </template>

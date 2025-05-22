@@ -18,7 +18,7 @@ withDefaults(defineProps<{
             <SidebarTrigger class="-ml-1" />
              {{ $page.props.title ?? 'Dashboard'}}
                 <nav
-                    class="left-0 ml-auto md:flex-row md:flex-nowrap md:justify-start flex items-center px-4 pb-0"
+                    class="left-0 ml-auto md:flex-row md:flex-nowrap md:justify-start hidden lg:flex items-center px-4 pb-0"
                     v-if="$page.props.breadcumb">
                     <div
                     class="w-full mx-autp items-center flex  md:flex-nowrap flex-wrap md:px-4 px-4 "

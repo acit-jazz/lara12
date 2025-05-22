@@ -24,15 +24,21 @@ const filter = () => {
             <div
                 class="relative flex flex-col min-w-0 break-words w-full mb-6"
             >
-                  <div class="rounded-t mb-0 px-6 py-4 border-0">
+                  <div class="rounded-t mb-0 px-3 py-4 border-0">
                     <div class="flex flex-wrap items-center">
                         <div class="relative w-full max-w-full flex">
                             <h3 class="font-bold text-lg">
                                 {{title}}
                             </h3>
-                            <div class="ml-auto">
-                              <SecondaryLink  :href="route('administrator.create')" class="px-3 py-1 rounded-none rounded-l-md">Create New</SecondaryLink>
-                              <SecondaryLink  :href="route('administrator.index', { trash:'1' })" class="px-3 py-1 rounded-none rounded-r-md bg-red-500">Trash </SecondaryLink>
+                            <div class="fixed bottom-3 right-3 lg:bottom-0 lg:right-0 lg:relative ml-auto flex flex-col gap-3 lg:block">
+                              <SecondaryLink  :href="route('administrator.create')" class="size-10 lg:size-auto  lg:px-3 lg:py-2 flex items-center justify-center gap-2 !rounded-full lg:!rounded-none lg:!rounded-l-md">
+                                <i class="fa fa-pencil"></i>
+                                <span class="hidden lg:block">Create New</span>
+                              </SecondaryLink>
+                              <SecondaryLink  :href="route('administrator.index', { trash:'1' })" class="size-10 lg:size-auto  lg:px-3 lg:py-2 flex items-center justify-center gap-2 !rounded-full lg:!rounded-none lg:!rounded-r-md bg-red-500">
+                                <i class="fa fa-trash-can"></i>
+                                <span class="hidden lg:block">Trash</span>
+                               </SecondaryLink>
                             </div>
                         </div>
                     </div>
@@ -41,17 +47,29 @@ const filter = () => {
                 <div class="block w-full overflow-x-auto">
                 <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
-                    <tr>
+                    <tr class="hidden lg:table-row">
                         <Th>Username</Th>
                         <Th>Email</Th>
+                        <Th>Role</Th>
                         <Th>Created Dates</Th>
                         <Th></Th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(administrator,index) in administrators.data" :key="index">
-                        <Td>{{administrator.name}}</Td>
-                         <Td>{{administrator.email}}</Td>
+                    <tr v-for="(administrator,index) in administrators.data" :key="index" class=" cursor-pointer relative py-3 block lg:py-0 lg:table-row border-t lg:border-0">
+                        <Td>
+                            <strong class="block lg:hidden">Name</strong>{{administrator.name}}</Td>
+                         <Td>
+                            <strong class="block lg:hidden">Email</strong>{{administrator.email}}</Td>
+                         <Td>
+
+                            <strong class="block lg:hidden">Role</strong>
+                            <Badge
+                            class="!text-xs !py-1 !px-2 mr-2 bg-amber-600 text-white"
+                            >
+                            {{ administrator.role?.name }}
+                            </Badge>
+                         </Td>
                          <Td>{{administrator.created_at}}</Td>
                           <Td>
                             <div v-if="trash">

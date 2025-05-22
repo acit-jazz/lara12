@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
     {
         
         
-        $resources = ['Admin', 'Page', 'User','Media','Product','Product Category'];
+        $resources = ['Admin', 'Page', 'User','Media','Product','Product Category','Article','Tag'];
         $actions = ['View', 'Create', 'Edit', 'Delete'];
 
         foreach ($resources as $res) {
@@ -34,7 +34,7 @@ class AdminSeeder extends Seeder
        
 
         // Filter permission untuk editor
-        $editorResourceFilters = ['Page', 'Product', 'Media', 'Product Category'];
+        $editorResourceFilters = ['Page', 'Product', 'Media', 'Product Category', 'Article', 'Tag'];
 
         $editorPermissions = Permission::query()
             ->where(function ($query) use ($editorResourceFilters) {
