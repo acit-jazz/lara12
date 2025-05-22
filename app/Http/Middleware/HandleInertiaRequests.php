@@ -44,9 +44,6 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         $user = auth('admin')->user() ?? auth()->user();
-        if (!$user) {
-            abort(403, 'Unauthorized');
-        }
         return [
             ...parent::share($request),
             'name' => config('app.name'),

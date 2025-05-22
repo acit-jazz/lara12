@@ -26,7 +26,7 @@ class AdministratorUpdateRequest extends FormRequest
     {
         // dd($this->password);
 
-        $userId = $this->route('administrator')?->id ?? null;
+        $userId = $this->route('administrator') ?? null;
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [

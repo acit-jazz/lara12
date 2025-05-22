@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.10.1",
         "predis/predis": "^3.0",
         "spatie/laravel-package-tools": "^1.92",
+        "spatie/laravel-permission": "^6.18",
         "spatie/laravel-sluggable": "^3.7",
         "tightenco/ziggy": "^2.4"
     },

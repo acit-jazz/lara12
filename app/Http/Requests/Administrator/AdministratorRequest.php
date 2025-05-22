@@ -27,7 +27,14 @@ class AdministratorRequest extends FormRequest
             // 'bod' => 'required',
             'password' => ['required', 'confirmed',
                             Password::min(8)->letters()->mixedCase()->numbers()->symbols()],
-            'email' => 'required|string|email|max:255|unique:admins,email,'.$this->id,
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:admins'
+            ],
         ];
     }
 }

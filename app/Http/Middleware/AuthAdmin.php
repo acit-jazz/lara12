@@ -15,15 +15,12 @@ class AuthAdmin
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$guards)
+    public function handle($request, Closure $next, $guard = 'admin')
     {
-        // dd('ssss')
-        $guards = empty($guards) ? [null] : $guards;
-        // dd(Auth::guard('admin')->check());
-        if (Auth::guard('admin')->check()) {
-            return $next($request);
+        if (!auth()->guard($guard)->check()) {
+            return redirect()->route('admin.login.create'); // atau response 403/401
         }
-        // return redirect('/');
-        return redirect()->route('admin.login.create');
+
+        return $next($request);
     }
 }

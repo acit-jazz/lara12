@@ -7,7 +7,6 @@ import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
-
 const mainNavItems: NavItem[] = usePage<SharedData>().props.navigation.sections;
 const footerNavItems: NavItem[] = [
     // {

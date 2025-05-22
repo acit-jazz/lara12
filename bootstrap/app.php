@@ -3,10 +3,14 @@
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\RoleOrPermissionAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,6 +31,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             // Tambahkan di sini
             'auth.admin' => AuthAdmin::class,
+            'permission' => PermissionMiddleware::class,
+            'role' => RoleMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'role_or_permission_admin' => RoleOrPermissionAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

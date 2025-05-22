@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
-class AdminstratorController extends Controller
+class AdministratorController extends Controller
 {
     public function index()
     {
@@ -148,32 +148,14 @@ class AdminstratorController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function update(AdministratorUpdateRequest $request)
+    public function update(Admin $administrator, AdministratorUpdateRequest $request)
     {
-        try {
-            $post = $request->all();
+        $administrator->update($request->except(['password']));
 
-            $administrator = Admin::where(
-                'id',
-                $post['id']
-            )->first();
-            // dd($administrator->name);
-            $administrator->name = $post['name'];
-            // $administrator->bod = $post['bod'];
-            $administrator->email = $post['email'];
-            if ($post['password'] != '') {
-                $administrator->password = Hash::make($post['password']);
-            }
 
-            $administrator->save();
-            Cache::tags('administrator')->flush();
+        Cache::tags(['administrators'])->flush();
 
-            return redirect('backend/administrator')->with('message', 'proses update  administrator berhasil');
-        } catch (\Throwable $th) {
-            dd($th);
-
-            return redirect('backend/administrator')->with('message', 'mohon maaf sedang ada gangguan silahkan coba bebrapa saat lagi');
-        }
+        return redirect()->back()->with('message', toTitle($administrator->title).' has been updated');
     }
 
     /**

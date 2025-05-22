@@ -70,7 +70,7 @@ const filter = () => {
                                 <SecondaryLink  class="px-3 py-2 bg-green-500 rounded-none rounded-l-md" :href="route('page.restore', { page:page })" method="post" as="button">
                                     <i class="fas fa-rotate-right"></i>
                                 </SecondaryLink>
-                                <SecondaryLink  class="px-3 py-2 bg-red-500 rounded-none rounded-r-md" :href="route('page.forceDelete', { page:page })" method="post" as="button">
+                                <SecondaryLink  class="px-3 py-2 bg-red-500 rounded-none rounded-r-md" :href="route('page.destroy', { page:page })" method="post" as="button">
                                     <i class="fas fa-trash-can"></i>
                                 </SecondaryLink>
                             </div>

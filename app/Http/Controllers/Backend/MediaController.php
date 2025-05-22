@@ -35,7 +35,6 @@ class MediaController extends Controller
             ]
         ]);
     }
-
     /**
      * store data.
      */
@@ -54,41 +53,6 @@ class MediaController extends Controller
             return response()->json(false, 422);
         }
     }
-
-    /**
-     * Edit view.
-     */
-    public function edit(Media $media)
-    {
-        return Inertia::render('Views/'.vueFormExist(type(), 'media', 'form'), [
-            'media' => $media,
-            'type' => type(),
-            'method' => 'update',
-            'title' => 'Edit '.toTitle(type()),
-            'breadcumb' => [
-                [
-                    'text' => 'Dashboard',
-                    'url' => route('dashboard.index'),
-                ],
-                [
-                    'text' => toTitle(type()),
-                    'url' => route('post.index', ['type' => type()]),
-                ],
-            ],
-        ]);
-    }
-
-    /**
-     * Update Data.
-     */
-    public function update(MediaRequest $request, Media $media)
-    {
-        $media->update($request->all());
-        Cache::tags(['medias'])->flush();
-
-        return redirect()->route('post.index', ['type' => type()])->with('message', toTitle($media->title).' has been updated');
-    }
-
     /**
      * Remove the specified resource from storage temporary.
      */
