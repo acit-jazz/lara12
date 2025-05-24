@@ -30,6 +30,7 @@ class AdministratorController extends Controller
             'administrators' => AdministratorResource::collection($adminstrators),
             'title' => request('trash') ? 'Trash' : 'Administrator',
             'trash' => request('trash') ? true : false,
+            'request' => request()->all(),
             'breadcumb' => [
                 [
                     'text' => 'Dashboard',
@@ -75,7 +76,7 @@ class AdministratorController extends Controller
 
             Cache::tags('administrator')->flush();
 
-            return redirect('backend/administrator')->with('message', 'proses menambah  administrator berhasil');
+            return redirect()->route('administrator.rolePermission',['administrator'=> $admin->id])->with('message', 'proses menambah  administrator berhasil');
     }
 
     public function rolePermission(Admin $administrator)
@@ -106,12 +107,12 @@ class AdministratorController extends Controller
     }
     public function assignRolePermission(Admin $administrator , AdministratorRolePermissionRequest $request)
     {
-        $permissionIds = $request->permissions ;
+        $permissionIds = $request->permissions;
         $permissions = Permission::whereIn('id', $permissionIds)->get();
         $adminRole = Role::firstOrCreate(['name' => $request->role, 'guard_name' => 'admin']);
         $adminRole->syncPermissions($permissions);
         $adminRole->syncPermissions($permissions);
-        $administrator->assignRole($adminRole);
+        $administrator->syncRoles($adminRole);
         Cache::tags('administrator')->flush();
         return redirect()->back()->with('message', 'proses update  administrator berhasil');
     }

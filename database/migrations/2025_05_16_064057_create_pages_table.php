@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->string('type',100)->nullable();
+            $table->string('template',100)->nullable();
             $table->string('summary')->nullable();
             $table->longText('description')->nullable();
             $table->json('banners')->nullable();

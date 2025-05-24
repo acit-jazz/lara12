@@ -6,16 +6,21 @@ import {router } from '@inertiajs/vue3';
 const props  = defineProps({
     articles: Object,
     title:String,
-    search_title:String,
+    request:Object,
     is_admin:Boolean,
     trash:Boolean,
 });
-const params = ref({
-    search_title:'',
+const params = ref({ ...props.request,
+    search_title : '',
 })
 const filter = () => {
-    const endpoint = ref(useBuildQuery(route('article.index'),params.value));
+    const endpoint = ref(useBuildQuery(route('page.index'),params.value));
     router.get(endpoint.value);
+}
+const sortBy = (field) => {
+  params.value.sort = params.value.sort === 'desc' ? 'asc' : 'desc';
+  params.value.sort_by = field;
+  filter();
 }
 </script>
 <template>
@@ -52,11 +57,27 @@ const filter = () => {
                 <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
                     <tr class="hidden lg:table-row">
-                        <Th>Title</Th>
+                        <Th>Title 
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('title')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th>Tag</Th>
-                        <Th>Featured</Th>
-                        <Th>Status</Th>
-                        <Th>Published Date</Th>
+                        <Th>Featured
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('featured')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
+                        <Th>Status
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('status')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
+                        <Th>Published Date
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('published_at')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th></Th>
                     </tr>
                     </thead>

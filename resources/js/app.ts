@@ -1,5 +1,6 @@
 import '../css/app.css';
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import globalComponent from "@/Components/globalComponent";
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
@@ -20,7 +21,7 @@ declare module 'vite/client' {
     }
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'My Page';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -28,6 +29,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(globalComponent)
             .use(ZiggyVue)
             .mount(el);
     },

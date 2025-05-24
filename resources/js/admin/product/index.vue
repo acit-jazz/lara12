@@ -6,16 +6,21 @@ import {router } from '@inertiajs/vue3';
 const props  = defineProps({
     products: Object,
     title:String,
-    search_title:String,
+    request:Object,
     is_admin:Boolean,
     trash:Boolean,
 });
-const params = ref({
-    search_title:'',
+const params = ref({ ...props.request,
+    search_title : '',
 })
 const filter = () => {
     const endpoint = ref(useBuildQuery(route('product.index'),params.value));
     router.get(endpoint.value);
+}
+const sortBy = (field) => {
+  params.value.sort = params.value.sort === 'desc' ? 'asc' : 'desc';
+  params.value.sort_by = field;
+  filter();
 }
 </script>
 <template>
@@ -52,11 +57,27 @@ const filter = () => {
                 <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
                     <tr class="hidden lg:table-row">
-                        <Th>Title</Th>
+                        <Th>Title 
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('title')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th>Category</Th>
-                        <Th>Price</Th>
-                        <Th>Qty</Th>
-                        <Th>Published Date</Th>
+                        <Th>Price
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('price')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
+                        <Th>Qty
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('qty')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
+                        <Th>Published Date
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('published_at')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th></Th>
                     </tr>
                     </thead>

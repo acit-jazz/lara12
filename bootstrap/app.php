@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminPermission;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -34,7 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role' => RoleMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
-            'role_or_permission_admin' => RoleOrPermissionAdmin::class,
+            'admin_permission' => AdminPermission::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fa111e1fd6460f686ad2c9de896d842",
+    "content-hash": "cc08c36628558ee9e265fae8fd6170dc",
     "packages": [
         {
             "name": "acitjazz/article",
@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "packages/acitjazz/article",
-                "reference": "f1b1d5af2f7d524ae5b04885aae367ee0d03a997"
+                "reference": "22b161b0a68c02f55bf2cc2dad5935474a93a850"
             },
             "require": {
                 "illuminate/contracts": "^10.0||^11.0||^12.0",
@@ -86,6 +86,176 @@
                 "AcitJazz",
                 "article",
                 "laravel"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "acitjazz/contact-us",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "packages/acitjazz/contact-us",
+                "reference": "d87d6a8f748035d72fc7cee83c0f48d20d26bbfe"
+            },
+            "require": {
+                "illuminate/contracts": "^10.0||^11.0||^12.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.1.1||^7.10.0",
+                "orchestra/testbench": "^10.0.0||^9.0.0||^8.22.0",
+                "pestphp/pest": "^3.0",
+                "pestphp/pest-plugin-arch": "^3.0",
+                "pestphp/pest-plugin-laravel": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AcitJazz\\ContactUs\\ContactUsServiceProvider"
+                    ],
+                    "aliases": {
+                        "ContactUs": "AcitJazz\\ContactUs\\Facades\\ContactUs"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AcitJazz\\ContactUs\\": "src/",
+                    "AcitJazz\\ContactUs\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "AcitJazz\\ContactUs\\Tests\\": "tests/",
+                    "Workbench\\App\\": "workbench/app/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@composer run prepare"
+                ],
+                "prepare": [
+                    "@php vendor/bin/testbench package:discover --ansi"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Acit Jazz",
+                    "email": "chit.eureka@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package contact-us",
+            "homepage": "https://github.com/acitjazz/contact-us",
+            "keywords": [
+                "AcitJazz",
+                "contact-us",
+                "laravel"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "acitjazz/main-menu",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "packages/acitjazz/main-menu",
+                "reference": "d87d6a8f748035d72fc7cee83c0f48d20d26bbfe"
+            },
+            "require": {
+                "illuminate/contracts": "^10.0||^11.0||^12.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.1.1||^7.10.0",
+                "orchestra/testbench": "^10.0.0||^9.0.0||^8.22.0",
+                "pestphp/pest": "^3.0",
+                "pestphp/pest-plugin-arch": "^3.0",
+                "pestphp/pest-plugin-laravel": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AcitJazz\\MainMenu\\MainMenuServiceProvider"
+                    ],
+                    "aliases": {
+                        "MainMenu": "AcitJazz\\MainMenu\\Facades\\MainMenu"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AcitJazz\\MainMenu\\": "src/",
+                    "AcitJazz\\MainMenu\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "AcitJazz\\MainMenu\\Tests\\": "tests/",
+                    "Workbench\\App\\": "workbench/app/"
+                }
+            },
+            "scripts": {
+                "post-autoload-dump": [
+                    "@composer run prepare"
+                ],
+                "prepare": [
+                    "@php vendor/bin/testbench package:discover --ansi"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "test": [
+                    "vendor/bin/pest"
+                ],
+                "test-coverage": [
+                    "vendor/bin/pest --coverage"
+                ],
+                "format": [
+                    "vendor/bin/pint"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Acit Jazz",
+                    "email": "chit.eureka@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package main-menu",
+            "homepage": "https://github.com/acitjazz/main-menu",
+            "keywords": [
+                "AcitJazz",
+                "laravel",
+                "main-menu"
             ],
             "transport-options": {
                 "relative": true
@@ -8728,6 +8898,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "acitjazz/article": 20,
+        "acitjazz/contact-us": 20,
+        "acitjazz/main-menu": 20,
         "acitjazz/product-catalog": 20
     },
     "prefer-stable": true,

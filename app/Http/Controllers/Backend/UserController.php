@@ -21,12 +21,9 @@ class UserController extends Controller
 
         return Inertia::render('user/index', [
             'users' => UserResource::collection($users),
-            'type' => type(),
-            // 'tags' => $tags,
             'title' => request('trash') ? 'Trash' : 'User',
-            'locale' => app()->getLocale(),
             'trash' => request('trash') ? true : false,
-            'search_name' => request('search_name'),
+            'request' => request()->all(),
             'breadcumb' => [
                 [
                     'text' => 'Dashboard',

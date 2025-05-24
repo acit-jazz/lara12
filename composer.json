@@ -12,6 +12,8 @@
         "php": "^8.2",
         "acitjazz/product-catalog": "dev-main",
         "acitjazz/article": "dev-main",
+        "acitjazz/contact-us": "dev-main",
+        "acitjazz/main-menu": "dev-main",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
@@ -39,6 +41,14 @@
         {
             "type": "path",
             "url": "packages/acitjazz/article"
+        },
+        {
+            "type": "path",
+            "url": "packages/acitjazz/contact-us"
+        },
+        {
+            "type": "path",
+            "url": "packages/acitjazz/main-menu"
         }
     ],
     "autoload": {

@@ -43,7 +43,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
         <Heading :title="title" :description="description" />
 
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-x-12 lg:space-y-0">
-            <aside class="w-full max-w-xl lg:w-48" v-if="sidebarNavItems.length > 0">
+            <aside class="w-full max-w-xl lg:w-52" v-if="sidebarNavItems.length > 0">
                 <nav class="flex flex-col space-x-0 space-y-1">
                     <Button
                         v-for="item in sidebarNavItems"
@@ -61,8 +61,8 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
             <Separator class="my-6 md:hidden" />
 
-            <div class="flex-1 md:max-w-2xl">
-                <section class="max-w-xl space-y-12">
+            <div class="flex-1 ">
+                <section class=" space-y-12">
                     <slot />
                 </section>
             </div>

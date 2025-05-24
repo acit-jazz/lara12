@@ -21,13 +21,13 @@ function navigation()
                     'href' => route('dashboard.index'),
                     'icon' => 'fa-table-columns',
                     'type' => 'menu',
-                    'role_or_permission' => 'Master|View Dashboard',
+                    'permission' => 'View Dashboard',
                 ],
 
                 [
                     'title' => 'Pages',
                     'type' => 'header',
-                    'role_or_permission' => 'Master|Editor|View Page',
+                    'permission' => 'View Page',
                 ],
 
                 [
@@ -35,7 +35,7 @@ function navigation()
                     'href' => route('page.index'),
                     'icon' => 'fa-file',
                     'type' => 'menu',
-                    'role_or_permission' => 'Master|Editor|View Page',
+                    'permission' => 'View Page',
                 ],
             ],
         ];
@@ -44,14 +44,14 @@ function navigation()
             $navigatorCms['sections'][] = [
                 'title' => 'Product',
                 'type' => 'header',
-                'role_or_permission' => 'Master|Editor|View Product',
+                'permission' => 'View Product',
             ];
             $navigatorCms['sections'][] = [
                 'title' => 'Product Catalog',
                 'href' => route('product.index'),
                 'icon' => 'fa-box',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|Editor|View Product',
+                'permission' => 'View Product',
             ];
         }
         if (Route::has('product-category.index')) {
@@ -60,7 +60,7 @@ function navigation()
                 'href' => route('product-category.index'),
                 'icon' => 'fa-box',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|Editor|View Product Category',
+                'permission' => 'View Product Category',
             ];
         }
 
@@ -69,14 +69,14 @@ function navigation()
             $navigatorCms['sections'][] = [
                 'title' => 'Article',
                 'type' => 'header',
-                'role_or_permission' => 'Master|Editor|View Article',
+                'permission' => 'View Article',
             ];
             $navigatorCms['sections'][] = [
                 'title' => 'Article',
                 'href' => route('article.index'),
                 'icon' => 'fa-box',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|Editor|View Article',
+                'permission' => 'View Article',
             ];
         }
         if (Route::has('tag.index')) {
@@ -85,7 +85,22 @@ function navigation()
                 'href' => route('tag.index'),
                 'icon' => 'fa-box',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|Editor|View Tag',
+                'permission' => 'View Tag',
+            ];
+        }
+
+        if (Route::has('contact-submission.index')) {
+            $navigatorCms['sections'][] = [
+                'title' => 'Inbox',
+                'type' => 'header',
+                'permission' => 'View Contact Submission',
+            ];
+            $navigatorCms['sections'][] = [
+                'title' => 'Contact Submission',
+                'href' => route('contact-submission.index'),
+                'icon' => 'fa-box',
+                'type' => 'menu',
+                'permission' => 'View Contact Submission',
             ];
         }
         
@@ -93,33 +108,32 @@ function navigation()
             $navigatorCms['sections'][] = [
                 'title' => 'User',
                 'type' => 'header',
-                'role_or_permission' => 'Master|View User',
+                'permission' => 'View User',
             ];
             $navigatorCms['sections'][] = [
                 'title' => 'Administrator',
                 'href' => route('administrator.index'),
                 'icon' => 'fa-user-secret',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|View User',
+                'permission' => 'View User',
             ];
             $navigatorCms['sections'][] = [
                 'title' => 'Member',
                 'href' => route('user.index'),
                 'icon' => 'fa-user',
                 'type' => 'menu',
-                'role_or_permission' => 'Master|View User',
+                'permission' => 'View User',
             ];
         }
 
         $filterSections = function ($sections) use ($admin) {
             return array_filter($sections, function ($section) use ($admin) {
-                if (! isset($section['role_or_permission'])) {
-                    // Kalau tidak ada role_or_permission, tampilkan saja
-                    return true;
+                if (! isset($section['permission'])) {
+                    // Kalau tidak ada permission, tampilkan saja
+                    return false;
                 }
 
-                $checks = explode('|', $section['role_or_permission']);
-
+                $checks = explode('|', $section['permission']);
                 foreach ($checks as $check) {
                     $check = trim($check);
                     if (empty($check)) {
@@ -127,17 +141,18 @@ function navigation()
                     }
 
                     // Cek apakah user punya role ini
-                    if ($admin->hasRole($check)) {
-                        return true;
-                    }
-
+                    // if ($admin->hasRole($check)) {
+                    //     return true;
+                    // }
+                    $role = $admin->roles->first();
                     // Cek apakah user punya permission ini dengan try-catch agar tidak error
                     try {
-                        if ($admin->hasPermissionTo($check)) {
+                        
+                        if ($role->hasPermissionTo($check)) {
                             return true;
                         }
                     } catch (\Spatie\Permission\Exceptions\PermissionDoesNotExist $e) {
-                        // Kalau permission tidak ada, lanjut cek lainnya
+                      //  return false;
                     }
                 }
 

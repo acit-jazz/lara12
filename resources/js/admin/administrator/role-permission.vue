@@ -20,8 +20,17 @@ interface Props {
   roles: Array<{ id: any; name: string; permissions: any[] }>; // per role ada permission array id
   permissions: Array<{ id: any; name: string }>;
 }
-
 const props = defineProps<Props>();
+
+const grouped = props.permissions.reduce((acc, perm) => {
+  const words = perm.name.split(' ');
+  const key = words.slice(1).join(' '); // ambil semua kata setelah kata pertama
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(perm);
+  return acc;
+}, {});
+
+
 
 const breadcrumbs: BreadcrumbItem[] = [
   { title: 'User settings', href: '/backend/settings/profile' },
@@ -67,16 +76,31 @@ const arraysHaveSameElements = (arr1 : Array<any>, arr2 : Array<any>) =>  {
 }
 // Watch form.permissions untuk tandai perubahan manual
 watch(() => form.permissions.slice(), (newPermissions) => {
-    console.log('selectedRole.value',selectedRole.value)
   if (selectedRole.value) {
     const role = props.roles.find(r => r.id == selectedRole.value);
     const rolePerms = role ? role.permissions.map(r => r.id) : [];
     permissionsChangedManually.value = !arraysHaveSameElements(newPermissions, rolePerms );
-    form.role  = permissionsChangedManually.value ? '' : (role?.name ?? '');
+    form.role  = role?.name ?? '';
   } else {
     permissionsChangedManually.value = newPermissions.length > 0;
   }
 });
+
+const toggleGroupPermissions = (group: any[], checked: boolean) => {
+  const groupIds = group.map(p => p.id);
+  if (checked) {
+    // Tambah semua ID jika belum ada
+    form.permissions = [...new Set([...form.permissions, ...groupIds])];
+  } else {
+    // Hapus semua ID dari group
+    form.permissions = form.permissions.filter(id => !groupIds.includes(id));
+  }
+};
+
+const isGroupChecked = (group: any[]) => {
+  const groupIds = group.map(p => p.id);
+  return groupIds.every(id => form.permissions.includes(id));
+};
 
 const submit = () => {
     if (!form.role.trim()) {
@@ -121,8 +145,8 @@ const navItems: NavItem[] = [
         <form @submit.prevent="submit" class="space-y-6">
           <!-- Role (radio) -->
           <div class="grid gap-2">
-            <Label for="roles">Role</Label>
-            <div class="grid gap-2 grid-cols-3">
+            <Label for="roles" class="font-bold">Role</Label>
+            <div class="grid gap-2 grid-cols-3 mt-2">
                 <div v-for="role in props.roles" :key="role.id" class="flex items-center">
                 <input
                     type="radio"
@@ -138,28 +162,42 @@ const navItems: NavItem[] = [
                 </div>
             </div>
                         <!-- Role name input untuk bikin role baru -->
-            <div v-if="permissionsChangedManually" class="grid gap-2">
-            <Label for="newRoleName">New Role Names</Label>
-            <Input id="name" class="mt-1 block w-full" v-model="form.role" required autocomplete="role" placeholder="Role name" />
-            <InputError class="mt-2" :message="form.errors.role" />
+            <div v-if="permissionsChangedManually" class="mt-2">
+              <Label for="createOrUpdate" class="text-sm">Role Name</Label> <small>Please enter a different role name to create a new role.</small>
+              <Input id="name" class="mt-2 block w-full" v-model="form.role" required autocomplete="role" placeholder="Role name" />
+              <InputError class="mt-2" :message="form.errors.role" />
             </div>
           </div>
           
 
           <!-- Permissions (checkbox) -->
           <div class="grid gap-2">
-            <Label for="permissions">Permissions</Label>
-            <div class="grid gap-2 grid-cols-3">
-                <div v-for="permission in props.permissions" :key="permission.id" class="flex items-center">
-                    <Checkbox
+            <Label for="permissions" class="font-bold">Permissions</Label>
+            <div class="grid gap-5 grid-cols-4 mt-2">
+              <div v-for="(group,i) in grouped" :key="i" >
+                <div class="border-b pb-2 flex items-center">
+
+                  <input
                     type="checkbox"
-                    :value="permission.id"
-                    v-model="form.permissions"
-                    autocomplete="permissions"
-                    class="w-fit"
-                    />
-                    <span class="ml-2 text-sm">{{ permission.name }}</span>
+                    :checked="isGroupChecked(group)"
+                    @change="e => toggleGroupPermissions(group, e.target.checked)"
+                    class="appearance-none w-[5px] !p-2 h-[5px] border-0 checked:bg-amber-600 checked:border-transparent focus:outline-none focus:ring-1 focus:ring-amber-500"
+                  />
+                  <Label for="permissions" class="text-gray-600 ml-2">{{i}}</Label>
                 </div>
+                <div >
+                    <div v-for="permission in group" :key="permission.id" class="py-2 flex items-center">
+                        <Checkbox
+                        type="checkbox"
+                        :value="permission.id"
+                        v-model="form.permissions"
+                        autocomplete="permissions"
+                        class="w-fit h-fit"
+                        />
+                        <span class="ml-2 text-xs text-gray-600">{{ permission.name.split(' ')[0] }}</span>
+                    </div>
+                </div>
+              </div>
             </div>
             <InputError class="mt-2" :message="form.errors.permissions" />
           </div>

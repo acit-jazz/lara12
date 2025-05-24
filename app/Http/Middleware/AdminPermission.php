@@ -6,7 +6,7 @@ use Closure;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
-class RoleOrPermissionAdmin
+class AdminPermission
 {
     public function handle($request, Closure $next, $rolesOrPermissions)
     {
@@ -20,9 +20,9 @@ class RoleOrPermissionAdmin
 
         foreach ($rolesOrPermissions as $roleOrPermission) {
             // Cek role dulu
-            if ($user->hasRole($roleOrPermission)) {
-                return $next($request);
-            }
+            // if ($user->hasRole($roleOrPermission)) {
+            //     return $next($request);
+            // }
 
             // Kalau bukan role, cek permission (tangani exception jika permission tidak ada)
             try {

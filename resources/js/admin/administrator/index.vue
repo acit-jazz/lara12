@@ -5,16 +5,21 @@ import {router } from '@inertiajs/vue3';
 const props  = defineProps({
     administrators: Object,
     title:String,
-    search_title:String,
+    request:Object,
     is_admin:Boolean,
     trash:Boolean,
 });
-const params = ref({
-    search_title:'',
+const params = ref({ ...props.request,
+    search_name : '',
 })
 const filter = () => {
-    const endpoint = ref(useBuildQuery(route('page.index'),params.value));
+    const endpoint = ref(useBuildQuery(route('administrator.index'),params.value));
     router.get(endpoint.value);
+}
+const sortBy = (field) => {
+  params.value.sort = params.value.sort === 'desc' ? 'asc' : 'desc';
+  params.value.sort_by = field;
+  filter();
 }
 </script>
 <template>
@@ -27,9 +32,15 @@ const filter = () => {
                   <div class="rounded-t mb-0 px-3 py-4 border-0">
                     <div class="flex flex-wrap items-center">
                         <div class="relative w-full max-w-full flex">
-                            <h3 class="font-bold text-lg">
-                                {{title}}
-                            </h3>
+                            <div class="flex items-center">
+                                <h3 class="font-bold text-lg">
+                                    {{title}} 
+                                </h3>
+                                <div class="flex items-center ml-10 max-w-[300px] relative">
+                                    <TextInput type="text" class="mt-1 !py-1 block w-full" v-model="params.search_name" @change="filter"  placeholder="Search by name..." />
+                                    <i class="fa fa-search absolute right-2 text-gray-400 top-3"></i>
+                                </div>
+                            </div>
                             <div class="fixed bottom-3 right-3 lg:bottom-0 lg:right-0 lg:relative ml-auto flex flex-col gap-3 lg:block">
                               <SecondaryLink  :href="route('administrator.create')" class="size-10 lg:size-auto  lg:px-3 lg:py-2 flex items-center justify-center gap-2 !rounded-full lg:!rounded-none lg:!rounded-l-md">
                                 <i class="fa fa-pencil"></i>
@@ -48,10 +59,18 @@ const filter = () => {
                 <table class="items-center w-full bg-transparent border-collapse">
                     <thead>
                     <tr class="hidden lg:table-row">
-                        <Th>Username</Th>
+                        <Th>Name 
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('name')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th>Email</Th>
                         <Th>Role</Th>
-                        <Th>Created Dates</Th>
+                        <Th>Created Date
+                            <button class="ml-2 hover:text-primary"  @click="sortBy('created_at')">
+                            <i class="fa fa-sort"></i>
+                            </button>
+                        </Th>
                         <Th></Th>
                     </tr>
                     </thead>

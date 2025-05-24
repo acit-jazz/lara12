@@ -20,11 +20,9 @@ class PageController extends Controller
         return Inertia::render('page/index', [
             'pages' => PageResource::collection($pages),
             'type' => type(),
-            // 'tags' => $tags,
             'title' => request('trash') ? 'Trash' : 'Page',
-            'locale' => app()->getLocale(),
             'trash' => request('trash') ? true : false,
-            'search_title' => request('search_title'),
+            'request' => request()->all(),
             'breadcumb' => [
                 [
                     'text' => 'Dashboard',
@@ -46,7 +44,6 @@ class PageController extends Controller
         $page = new Page();
         $page = PageResource::make($page)->resolve();
         $templates = pageTemplates();
-        // dd($tags);
 
         return Inertia::render(''.vueFormExist(type(), 'page', 'form'), [
             'page' => $page,

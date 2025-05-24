@@ -2,6 +2,9 @@ import { defineAsyncComponent } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import { Draggable } from "@he-tree/vue";
 
+const Master = defineAsyncComponent(() =>
+    import("@/layouts/frontend/Master.vue")
+);
 const AppLayout = defineAsyncComponent(() =>
     import("@/layouts/AppLayout.vue")
 );
@@ -79,6 +82,7 @@ const SpinnerLoader = defineAsyncComponent(() =>
 );
 export default {
     install(Vue) {
+        Vue.component("Master", Master),
         Vue.component("AppLayout", AppLayout),
         Vue.component("Draggable", Draggable),
         Vue.component("Logo", Logo),
